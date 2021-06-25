@@ -1,6 +1,6 @@
 {
   "name": "ts-mqes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "convert mongo query to es query",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
