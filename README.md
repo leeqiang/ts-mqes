@@ -14,14 +14,41 @@ npm i ts-mqes
 ```
 import { convert, ESQuery } from 'ts-mqes'
 
-const query: ESQuery = convert({ foo: 'mongodb', bar: 'es' })
+const query: ESQuery = convert({
+  a: 'mongodb',
+  b: { $in: ['es'] },
+  c: { $ne: 'c' },
+  d: { $gt: 1, $lt: 4 },
+  e: { $nin: ['elastic'] },
+  f: { $regex: '*f*' },
+  g: { $text: 'g' },
+  h: { $not: { $gt: 5 } },
+  j: { $size: 2 }
+})
 // query
 {
   bool: {
     must: [{
-      term: { foo: 'mongodb' }
+      term: { a: 'mongodb' }
     }, {
-      term: { bar: 'es' }
+      terms: { b: ['es' ] }
+    }, {
+      range: { d: { gt: 1, lt: 4 } }
+    }, {
+      wildcard: { f: '*f*' }
+    }, {
+      wildcard: { g: '*g*' }
+    }, {
+      script: {
+        script: "doc['j'].length === 2"
+      }
+    }],
+    must_not: [{
+      term: { c: 'c' }
+    }, {
+      terms: { e: [ 'elastic' ] }
+    }, {
+      range: { h: { gt: 5 } }
     }]
   }
 }
