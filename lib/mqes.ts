@@ -81,7 +81,6 @@ export function _or (arr: any): ESQuery {
 }
 
 export function _and (arr: any): ESQuery {
-  console.log(arr)
   if (!_.isArray(arr)) {
     throw new Error('$and: value must Array')
   }
