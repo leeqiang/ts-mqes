@@ -1,20 +1,18 @@
 {
-  "name": "mqes",
-  "version": "1.7.20",
-  "description": "conver mongo query to es query",
-  "main": "lib/mqes.js",
+  "name": "ts-mqes",
+  "version": "1.0.0",
+  "description": "convert mongo query to es query",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "prepublish": "tsc",
   "scripts": {
-    "test": "mocha --compilers coffee:coffee-script/register ./test.coffee",
-    "prepublish": "coffee -c lib/*.coffee"
+    "lint": "./node_modules/ts-standard/bin/cmd.js",
+    "lint:fix": "./node_modules/ts-standard/bin/cmd.js --fix",
+    "test": "mocha -r ts-node/register test/**/*.test.ts"
   },
-  "files": [
-    "package.json",
-    "README.md",
-    "lib/mqes.js"
-  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/lusionx/mqes.git"
+    "url": "https://github.com/leeqiang/mqes.git"
   },
   "keywords": [
     "mongo",
@@ -24,18 +22,29 @@
     "elasticsearch",
     "es"
   ],
-  "author": "lusionx@gmail.com",
+  "author": "leesumiir@gmail.com",
   "license": "MIT",
   "devDependencies": {
+    "@types/chai": "^4.2.19",
+    "@types/mocha": "^8.2.2",
+    "chai": "^4.3.4",
+    "mocha": "2.3.4",
     "should": "^8.0.1",
-    "coffee-script": "1.9.3",
-    "mocha": "2.3.4"
+    "ts-node": "^10.0.0",
+    "ts-standard": "^10.0.0"
   },
   "bugs": {
-    "url": "https://github.com/lusionx/mqes/issues"
+    "url": "https://github.com/leeqiang/mqes/issues"
   },
-  "homepage": "https://github.com/lusionx/mqes",
+  "homepage": "https://github.com/leeqiang/mqes",
   "dependencies": {
+    "@types/lodash": "^4.14.170",
     "lodash": "^3.10.1"
+  },
+  "ts-standard": {
+    "project": "./tsconfig.json",
+    "ignore": [
+      "dist"
+    ]
   }
 }

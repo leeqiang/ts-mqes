@@ -1,48 +1,33 @@
-将mongo的query语句转化成es的
-=============
+ts-mqes
+=======
 
-单纯的分析mongo中查询关键词, 并转化
+受 https://github.com/lusionx/mqes 启发, 原先项目是 coffeescript 版本的，现在使用 ts 重写，顺便学习一下 typescript
 
-> elastic version 1.7
+写的不好的地方，还希望多多包含，提提 PR.
 
-### 目标
-不是做一个完全的兼容转化, 选取mongo查询语法和es查询功能的一个共有子集, 对应起来
-
-### 映射关系
-
-- $eq, $ne
-- $gt, $gte, $lt, $lte
-- $in, $nin
-- $regex
-- $exists
-- $size
-- $and
-- $or
-- $not
-- $and $or $not 嵌套
-
-
-### 变相支持
-
-- $text:
+### Install
 ```
-{tags_string:{$text: '1boy'}}
-
-{tags_string:{$text: '1boy head'}} // eq: tags_string like 1boy or head
-
-{tags_string:{$text: '1boy AND head'}} // eq: tags_string like 1boy AND head
+npm i ts-mqes
 ```
 
-- $script:
+### How to Use
 ```
-{any:{$script: "doc['num1'].value > 1"}} // 1: any 部分写什么都行, 仅是为了统一语法中的先写字段名的规则, 转化后会忽略,
-{anx:{$script: "doc['num1'].value > 1"}} // 2: 与上行是等价的
-{any:{$script: {script: "doc['num1'].value > p1", params: {p1: 2}}}} // 3: 可以设置参数
+import { convert, ESQuery } from 'ts-mqes'
+
+const query: ESQuery = convert({ foo: 'mongodb', bar: 'es' })
+// query
+{
+  bool: {
+    must: [{
+      term: { foo: 'mongodb' }
+    }, {
+      term: { bar: 'es' }
+    }]
+  }
+}
 ```
 
-
-### 不支持
-- $nor
-
-### 测试
-> `curl -XPOST -H "Content-Type: application/json" --data '{"width":1}' http://bili.xroom.3322.org/api/dev/mq2es`
+### Test
+```
+npm test
+```
