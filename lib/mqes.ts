@@ -199,29 +199,16 @@ export function _query (q: object): object | any {
           })
         }
         break
+      case '$text':
+        must.push({ wildcard: { [f]: `*${String(vv)}*` } })
+        break
       case '$regex':
-        must.push({ regexp: { [f]: vv.toString() } })
+        must.push({ wildcard: { [f]: String(vv) } })
         break
       case '$size':
         must.push({
           script: {
-            script: `doc[${f}].length == param1`,
-            params: {
-              param1: _.isNumber(vv) ? vv * 1 : 0
-            }
-          }
-        })
-        break
-      case '$text':
-        must.push({
-          fquery: {
-            _cache: true,
-            query: {
-              query_string: {
-                fields: [f],
-                query: vv
-              }
-            }
+            script: `doc['${f}'].length === ${_.isNumber(vv) ? vv * 1 : 0}`
           }
         })
         break

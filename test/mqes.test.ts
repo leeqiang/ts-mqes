@@ -24,6 +24,24 @@ describe('mqes', function () {
     done()
   })
 
+  it('convert#$regex', function (done) {
+    const query: ESQuery = convert({ _id: { $regex: '*123*' } })
+    expect(_.get(query, 'bool.must.0.wildcard._id')).to.eql('*123*')
+    done()
+  })
+
+  it('convert#$not', function (done) {
+    const query: ESQuery = convert({ star: { $not: { $gt: 2 } } })
+    expect(_.get(query, 'bool.must_not.0.range.star.gt')).to.eql(2)
+    done()
+  })
+
+  it('convert#$text', function (done) {
+    const query: ESQuery = convert({ _id: { $text: '123' } })
+    expect(_.get(query, 'bool.must.0.wildcard._id')).to.eql('*123*')
+    done()
+  })
+
   it('convert#$or', function (done) {
     const query: ESQuery = convert({
       _id: '123',
