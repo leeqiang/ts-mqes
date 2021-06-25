@@ -168,6 +168,7 @@ export function _query (q: object): object | any {
               script: vv
             }
           })
+          // eslint-disable-next-line
         } else if (vv.script && vv.params) {
           must.push({
             script: {
