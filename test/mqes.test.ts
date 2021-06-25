@@ -3,31 +3,28 @@ import _ from 'lodash'
 import { expect } from 'chai'
 import { convert, ESQuery } from '../lib'
 
-describe('mqes', () => {
-  before(async function () {
-  })
-
-  after(async function () {
-  })
-
-  it('convert', async () => {
+describe('mqes', function () {
+  it('convert', function (done) {
     const query: ESQuery = convert({ _id: '123' })
     expect(_.get(query, 'bool.must.0.term._id')).to.eql('123')
+    done()
   })
 
-  it('convert#$or, $lte', async () => {
+  it('convert#$or, $lte', function (done) {
     const query: ESQuery = convert({ _id: '123', $or: [ { date: { $lte: 1 } }] })
     expect(_.get(query, 'bool.must.0.term._id')).to.eql('123')
     expect(_.get(query, 'bool.should.0.range.date.lte')).to.eql(1)
+    done()
   })
 
-  it('convert#$or, $gte', async () => {
+  it('convert#$or, $gte', function (done) {
     const query: ESQuery = convert({ _id: '123', $or: [ { date: { $gte: 1 } }] })
     expect(_.get(query, 'bool.must.0.term._id')).to.eql('123')
     expect(_.get(query, 'bool.should.0.range.date.gte')).to.eql(1)
+    done()
   })
 
-  it('convert#$or', async () => {
+  it('convert#$or', function (done) {
     const query: ESQuery = convert({
       _id: '123',
       $or: [ { date: { $gte: 1, $lte: 10 } }, { date2: { $gte: 1, $lte: 2}}],
@@ -42,5 +39,6 @@ describe('mqes', () => {
     expect(_.get(query, 'bool.should.1.range.date2.gte')).to.eql(1)
     expect(_.get(query, 'bool.should.1.range.date2.lte')).to.eql(2)
     expect(_.get(query, 'bool.must_not.0.term.f')).to.eql(4)
+    done()
   })
 })
